@@ -23,7 +23,7 @@ class UsersSeeder extends Seeder
             'token'   => ''
         ]);
 
-        DB::table('Users')->insert([
+        DB::table('users')->insert([
             'name' => 'user',
             'password' => password_hash('123', PASSWORD_DEFAULT),
             'role_id' => 2,

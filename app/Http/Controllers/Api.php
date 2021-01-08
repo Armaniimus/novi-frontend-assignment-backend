@@ -4,19 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\Message;
+use App\Http\Controllers\SongsController;
 use Illuminate\Http\Request;
 
 class Api extends Controller
 {
     public function __construct() {
         $this->message = new Message();
+        $this->auth = new Auth($this->message);
     }
 
     public function login() {
         ['username' => $username, 'password' => $password] = $this->retrievePost(['username', 'password'], $_REQUEST);
 
-        $auth = new Auth($this->message);
-        $key = $auth->login($username, $password);
+        $key = $this->auth->login($username, $password);
+
+        $this->message->retrieve();
+    }
+
+    public function overview() {
+        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
+
+        $role = $this->auth->checkIntern($token);
+        if ( $role !== false ) { 
+            $this->message->addInfo('role', $role);
+            $lied = new SongsController();
+            $this->message->addInfo( 'songinfo', $lied->index() );
+        }      
 
         $this->message->retrieve();
     }

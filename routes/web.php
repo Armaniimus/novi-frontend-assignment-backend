@@ -14,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\Api;
-use App\Http\Controllers\Login;
-Route::get('/login', [Login::class, 'run']);
 Route::get('/login', [Api::class, 'login']);
-
-use App\Http\Controllers\Auth;
-Route::get('/check', [Auth::class, 'check']);
+Route::get('/overview', [Api::class, 'overview']);
 
 Route::fallback(function () {
     /** This will check for the 404 view page unders /resources/views/errors/404 route */

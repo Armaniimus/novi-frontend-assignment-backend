@@ -18,7 +18,7 @@ use App\Http\Controllers\Api;
 use App\Http\Controllers\Auth;
 
 Route::post('/login', [Api::class, 'login']);
-Route::post('/check', [Auth::class, 'check']);
+Route::post('/overview', [Api::class, 'overview']);
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

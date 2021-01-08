@@ -52,7 +52,7 @@ class Auth extends Controller
 
     public function check() {
         if ( !isset( $_REQUEST['token']) ) {
-            $this->message->addMessage('no token given');
+            $this->message->addError('no token given');
             return false;
         } 
 
@@ -61,13 +61,13 @@ class Auth extends Controller
 
     public function checkIntern($token) {
         if ($token === '' || $token === null) {
-            $this->message->addMessage('token has no value');
+            $this->message->addError('token has no value');
             return false;
         }
 
         $user = Users::where('token', $token)->first();
         if (!$user) {
-            $this->message->addMessage('invalid token');
+            $this->message->addError('invalid token');
             return false;
         }
 
