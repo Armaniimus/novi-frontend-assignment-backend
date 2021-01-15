@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Http\Controllers\Api;
-use App\Http\Controllers\Auth;
-
 Route::post('/login', [Api::class, 'login']);
+Route::post('/logout', [Api::class, 'logout']);
 
 Route::post('/overview', [Api::class, 'overview']);
 Route::post('/overview/{id}', [Api::class, 'overviewSpecific']);

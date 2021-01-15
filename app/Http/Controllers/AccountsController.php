@@ -24,7 +24,6 @@ class AccountsController extends Controller {
                 $user->name = $accountName;
                 $user->password = password_hash($password, PASSWORD_DEFAULT);
                 $user->role_id = $roleID;
-                $user->token = '';
                 $user->save();
 
                 $this->setAccountInfo($user);

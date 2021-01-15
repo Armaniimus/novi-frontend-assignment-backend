@@ -8,7 +8,8 @@ class Message extends Controller
 {
     private $messages = [];
     private $errors = [];
-    private $info = ['messages' => null, 'errors' => null, 'status' => ''];
+    private $auth = null;
+    private $info = ['messages' => null, 'errors' => null, 'status' => '', 'auth' => null ];
 
     private function renderMessages() {
         if ( count($this->messages) === 0) {
@@ -37,6 +38,29 @@ class Message extends Controller
         }
     }
 
+    private function renderAuth() {        
+        if ($this->auth === true) {
+            $this->info['auth'] = 'success';
+        } else {
+            $this->info['auth'] = 'failed';
+            $this->addError('authFailed');
+        }
+    }
+
+    public function setAuth($auth, $message = NULL) {
+        if ($auth === true && $this->auth !== false) {
+            $this->auth = $auth;
+        
+        } else if ($auth === false) {
+            $this->auth = $auth;
+            if ($message !== NULL) {
+                $this->addMessage($message);
+            }
+        } else {
+            $this->addError('invalid AuthSetting');
+        }
+    }
+
     public function addMessage($message) {
         $this->messages[] = $message; 
     }
@@ -55,6 +79,7 @@ class Message extends Controller
     }
 
     public function retrieve() {
+        $this->renderAuth();
         $this->renderMessages();
         $this->renderErrors();
 

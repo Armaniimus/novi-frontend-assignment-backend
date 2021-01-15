@@ -18,7 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique();
             $table->integer('role_id');
             $table->string('password');
-            $table->char('token' , 128);
+            $table->char('token' , 128)->nullable();
+            $table->timestamp('soft_timeout')->nullable();
+            $table->timestamp('hard_timeout')->nullable();
             $table->timestamps();
         });
     }

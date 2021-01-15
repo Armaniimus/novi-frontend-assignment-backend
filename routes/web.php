@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Http\Controllers\Api;
 Route::get('/login', [Api::class, 'login']);
+Route::get('/logout', [Api::class, 'logout']);
 
 Route::get('/overview', [Api::class, 'overview']);
 Route::get('/overview/{id}', [Api::class, 'overviewSpecific']);

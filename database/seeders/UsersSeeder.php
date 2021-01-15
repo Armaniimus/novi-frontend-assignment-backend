@@ -19,15 +19,13 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'admin',
             'password' => password_hash('123', PASSWORD_DEFAULT),
-            'role_id' => 1,
-            'token'   => ''
+            'role_id' => 1
         ]);
 
         DB::table('users')->insert([
             'name' => 'user',
             'password' => password_hash('123', PASSWORD_DEFAULT),
-            'role_id' => 2,
-            'token'   => ''
+            'role_id' => 2
         ]);
     }
 }

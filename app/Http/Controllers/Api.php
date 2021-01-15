@@ -22,11 +22,15 @@ class Api extends Controller {
         $this->message->retrieve();
     }
 
-    public function overview() {
-        $role = $this->checkToken();
+    public function logout() {
+        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
+        $this->auth->logout($token);
 
-        if ( $role !== false ) { 
-            $this->message->addInfo('role', $role);
+        $this->message->retrieve();
+    }
+
+    public function overview() {
+        if ($this->checkToken() !== false) {
             $lied = new SongsController();
             $this->message->addInfo( 'songinfo', $lied->index() );
         }      
@@ -35,10 +39,7 @@ class Api extends Controller {
     }
 
     public function overviewSpecific($id) {
-        $role = $this->checkToken();
-
-        if ($role !== false) {
-            $this->message->addInfo('role', $role);
+        if ($this->checkToken() !== false) {
             $lied = new SongsController();
             $this->message->addInfo( 'songinfo', $lied->show($id) );
         }
@@ -47,9 +48,7 @@ class Api extends Controller {
     }
 
     public function accountbeheer() {
-        $role = $this->checkToken();
-
-        if ($role === 'admin') {
+        if ( $this->checkAdmin() ) {
             $account = new AccountsController($this->message);
             $account->index();
         }
@@ -58,8 +57,7 @@ class Api extends Controller {
     }
 
     public function accountbeheerCreate() {
-        $role = $this->checkToken();
-        if ($role === 'admin') {
+        if ( $this->checkAdmin() ) {
             ['accountname' => $accountName, 'password' => $password, 'roleid' => $roleId] = $this->retrievePost(['accountname', 'password', 'roleid'], $_REQUEST);
             $account = new AccountsController($this->message);
             $account->create($accountName, $password, $roleId);
@@ -69,8 +67,7 @@ class Api extends Controller {
     }
 
     public function accountbeheerUpdate() {
-        $role = $this->checkToken();
-        if ($role === 'admin') {
+        if ( $this->checkAdmin() ) {
             ['accountid' => $accountId, 'accountname' => $accountName, 'password' => $password, 'roleid' => $roleID] = $this->retrievePost(['accountid', 'accountname', 'password', 'roleid'], $_REQUEST);
             $account = new AccountsController($this->message);
             $account->update($accountId, $accountName, $password, $roleID);
@@ -80,8 +77,7 @@ class Api extends Controller {
     }
     
     public function accountbeheerDelete() {
-        $role = $this->checkToken();
-        if ($role === 'admin') {
+        if ( $this->checkAdmin() ) {
             ['accountid' => $accountid] = $this->retrievePost(['accountid'], $_REQUEST);
             $account = new AccountsController($this->message);
             $account->delete($accountid);
@@ -90,9 +86,14 @@ class Api extends Controller {
         $this->message->retrieve();
     }
 
+    private function checkAdmin() {
+        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
+        return $this->auth->checkAdmin($token);
+    }
+
     private function checkToken() {
         ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
-        return $this->auth->checkInternToken($token);
+        return $this->auth->checkToken($token);
     }
 
     private function retrievePost(array $dataIndexes, array $data) {
