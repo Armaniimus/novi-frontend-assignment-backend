@@ -18,9 +18,14 @@ use App\Http\Controllers\Api;
 use App\Http\Controllers\Auth;
 
 Route::post('/login', [Api::class, 'login']);
+
 Route::post('/overview', [Api::class, 'overview']);
 Route::post('/overview/{id}', [Api::class, 'overviewSpecific']);
 
+Route::post('/accountbeheer', [Api::class, 'accountbeheer']);
+Route::post('/accountbeheer/create', [Api::class, 'accountbeheerCreate']);
+Route::post('/accountbeheer/update', [Api::class, 'accountbeheerUpdate']);
+Route::post('/accountbeheer/delete', [Api::class, 'accountbeheerDelete']);
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\Message;
 use App\Http\Controllers\SongsController;
+use App\Http\Controllers\AccountsController;
 use Illuminate\Http\Request;
 
-class Api extends Controller
-{
+class Api extends Controller {
     public function __construct() {
         $this->message = new Message();
         $this->auth = new Auth($this->message);
@@ -23,9 +23,8 @@ class Api extends Controller
     }
 
     public function overview() {
-        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
+        $role = $this->checkToken();
 
-        $role = $this->auth->checkIntern($token);
         if ( $role !== false ) { 
             $this->message->addInfo('role', $role);
             $lied = new SongsController();
@@ -36,8 +35,7 @@ class Api extends Controller
     }
 
     public function overviewSpecific($id) {
-        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
-        $role = $this->auth->checkIntern($token);
+        $role = $this->checkToken();
 
         if ($role !== false) {
             $this->message->addInfo('role', $role);
@@ -45,8 +43,56 @@ class Api extends Controller
             $this->message->addInfo( 'songinfo', $lied->show($id) );
         }
 
-        // $this->message->addMessage('id = ' . $id);
         $this->message->retrieve();
+    }
+
+    public function accountbeheer() {
+        $role = $this->checkToken();
+
+        if ($role === 'admin') {
+            $account = new AccountsController($this->message);
+            $account->index();
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function accountbeheerCreate() {
+        $role = $this->checkToken();
+        if ($role === 'admin') {
+            ['accountname' => $accountName, 'password' => $password, 'roleid' => $roleId] = $this->retrievePost(['accountname', 'password', 'roleid'], $_REQUEST);
+            $account = new AccountsController($this->message);
+            $account->create($accountName, $password, $roleId);
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function accountbeheerUpdate() {
+        $role = $this->checkToken();
+        if ($role === 'admin') {
+            ['accountid' => $accountId, 'accountname' => $accountName, 'password' => $password, 'roleid' => $roleID] = $this->retrievePost(['accountid', 'accountname', 'password', 'roleid'], $_REQUEST);
+            $account = new AccountsController($this->message);
+            $account->update($accountId, $accountName, $password, $roleID);
+        }
+
+        $this->message->retrieve();
+    }
+    
+    public function accountbeheerDelete() {
+        $role = $this->checkToken();
+        if ($role === 'admin') {
+            ['accountid' => $accountid] = $this->retrievePost(['accountid'], $_REQUEST);
+            $account = new AccountsController($this->message);
+            $account->delete($accountid);
+        }
+
+        $this->message->retrieve();
+    }
+
+    private function checkToken() {
+        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
+        return $this->auth->checkInternToken($token);
     }
 
     private function retrievePost(array $dataIndexes, array $data) {

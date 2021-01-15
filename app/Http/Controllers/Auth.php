@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Users;
 
-class Auth extends Controller
-{
+class Auth extends Controller {
     public function __construct(Message $message) {
         $this->message = $message;
     }
@@ -50,18 +49,27 @@ class Auth extends Controller
         $this->message->addInfo('role', $role);       
     }
 
-    public function check() {
+    public function checkToken() {
         if ( !isset( $_REQUEST['token']) ) {
             $this->message->addError('no token given');
             return false;
         } 
 
-        return $this->checkIntern( $_REQUEST['token'] );
+        return $this->checkInternToken( $_REQUEST['token'] );
     }
 
-    public function checkIntern($token) {
+    public function checkInternToken($token) {
         if ($token === '' || $token === null) {
             $this->message->addError('token has no value');
+            return false;
+        }
+
+        if (strLen($token) !== 128) {
+            if (strLen($token) < 32 || strLen($token) > 256 ) {
+                $this->message->addError('token has incorrect length');
+            } else {
+                $this->message->addError('invalid token');
+            }
             return false;
         }
 

@@ -6,18 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Songs;
 
 class SongsController extends Controller {
-    public function __construct() {
-        $this->songs = new Songs();
-    }
-
     public function index() {
-        $songs = Songs::all('id', 'number', 'title');
-        return $songs;
+        return Songs::all('id', 'number', 'title');
     }
 
     public function show($id) {
-        $songs = Songs::select(['id','number', 'title', 'songText'])->find(2);
-        // $songs = $songs->select();
-        return $songs;
+        return Songs::select(['id','number', 'title', 'songText'])->find(2);
     }
 }
