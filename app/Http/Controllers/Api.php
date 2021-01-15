@@ -35,6 +35,20 @@ class Api extends Controller
         $this->message->retrieve();
     }
 
+    public function overviewSpecific($id) {
+        ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
+        $role = $this->auth->checkIntern($token);
+
+        if ($role !== false) {
+            $this->message->addInfo('role', $role);
+            $lied = new SongsController();
+            $this->message->addInfo( 'songinfo', $lied->show($id) );
+        }
+
+        // $this->message->addMessage('id = ' . $id);
+        $this->message->retrieve();
+    }
+
     private function retrievePost(array $dataIndexes, array $data) {
         $returnData = [];
         foreach ($dataIndexes as $index) {

@@ -17,6 +17,7 @@ class CreateSongsTable extends Migration
             $table->id();
             $table->integer('number')->unique();
             $table->string('title')->unique();
+            $table->text('songText');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth;
 
 Route::post('/login', [Api::class, 'login']);
 Route::post('/overview', [Api::class, 'overview']);
+Route::post('/overview/{id}', [Api::class, 'overviewSpecific']);
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
