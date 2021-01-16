@@ -102,8 +102,8 @@ class Auth extends Controller {
         $role = $this->checkToken($token);
         if ( $role == false ) { 
             return false; 
-        }
-        else if ( $role !== 'admin') { 
+        
+        } else if ( $role !== 'admin') { 
             $this->message->setAuth(false, 'Account has no permission for this endpoint');
             return false;
         }
@@ -125,7 +125,7 @@ class Auth extends Controller {
         }
         
         $hardDifference = $timeNow - $user->hard_timeout->getTimestamp();
-        if ($hardDifference > $this->hardLockoutTime){
+        if ($hardDifference > $this->hardLockoutTime) {
             $this->message->setAuth(false, 'hardTimeout has been hit');
             $this->closeSession($user);
             return false;
