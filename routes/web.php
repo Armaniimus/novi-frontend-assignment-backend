@@ -25,6 +25,12 @@ Route::get('/accountbeheer/create', [Api::class, 'accountbeheerCreate']);
 Route::get('/accountbeheer/update', [Api::class, 'accountbeheerUpdate']);
 Route::get('/accountbeheer/delete', [Api::class, 'accountbeheerDelete']);
 
+Route::get('/liedbeheer', [Api::class, 'liedbeheer']);
+Route::get('/liedbeheer/create', [Api::class, 'liedbeheerCreate']);
+Route::get('/liedbeheer/update', [Api::class, 'liedbeheerUpdate']);
+Route::get('/liedbeheer/update/songtext', [Api::class, 'liedbeheerUpdateSongtext']);
+Route::get('/liedbeheer/delete', [Api::class, 'liedbeheerDelete']);
+
 Route::fallback(function () {
     /** This will check for the 404 view page unders /resources/views/errors/404 route */
     // return 404;
