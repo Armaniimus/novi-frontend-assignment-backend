@@ -7,9 +7,10 @@ use App\Models\Users;
 use App\Models\Roles;
 
 class AccountsController extends Controller {
-    public function __construct($message) {
-        $this->minPassLength = 3;
+    public function __construct(Message $message) {
+        $this->validate = new Validate($message);
         $this->message = $message;
+        $this->minPassLength = 3;
     }
 
     public function index() {
@@ -31,8 +32,6 @@ class AccountsController extends Controller {
             } else {
                 $this->message->addError('Account with this username allready exists');
             }            
-        } else {
-            $this->message->addError('invalidValidation failed');
         }
     }
 
@@ -68,10 +67,7 @@ class AccountsController extends Controller {
     }
 
     private function validateInput($accountName, $password, $roleID, $mode = 'create') {
-        if ( !is_int($roleID * 1) ) {
-            $this->message->addError('roleID not an integer');
-            return false;
-        }
+        if ( !$this->validate->id($roleID, 'roleID') ) {return false;}
         
         $role = Roles::find($roleID);
         if ( $role === NULL) {
@@ -79,10 +75,7 @@ class AccountsController extends Controller {
             return false;
         }
 
-        if ( strlen($accountName) > 0 && $accountName !== htmlspecialchars($accountName) ) {
-            $this->message->addError('invalid accountName');
-            return false;
-        }
+        if ( !$this->validate->string_htmlspecialchars($accountName, 'accountName') ) {return false;}
 
         if ( strlen($password) < $this->minPassLength ) {
             if ( strlen($password) === 0 && $mode === 'update' ) {

@@ -16,7 +16,6 @@ class Api extends Controller {
 
     public function login() {
         ['username' => $username, 'password' => $password] = $this->retrievePost(['username', 'password'], $_REQUEST);
-
         $key = $this->auth->login($username, $password);
 
         $this->message->retrieve();
@@ -31,8 +30,8 @@ class Api extends Controller {
 
     public function overview() {
         if ($this->checkToken() !== false) {
-            $lied = new SongsController();
-            $this->message->addInfo( 'songinfo', $lied->index() );
+            $lied = new SongsController($this->message);
+            $lied->index();
         }      
 
         $this->message->retrieve();
@@ -40,8 +39,53 @@ class Api extends Controller {
 
     public function overviewSpecific($id) {
         if ($this->checkToken() !== false) {
-            $lied = new SongsController();
-            $this->message->addInfo( 'songinfo', $lied->show($id) );
+            $lied = new SongsController($this->message);
+            $lied->show($id);
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function liedbeheer() {
+        if ( $this->checkAdmin() ) {
+            $lied = new SongsController($this->message);
+            $lied->index();
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function liedbeheerCreate() {
+        if ( $this->checkAdmin() ) {
+            $lied = new SongsController($this->message);
+            $lied->create();
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function liedbeheerUpdate() {
+        if ( $this->checkAdmin() ) {
+            $lied = new SongsController($this->message);
+            $lied->update();
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function liedbeheerUpdateSongtext() {
+        if ( $this->checkAdmin() ) {
+            $lied = new SongsController($this->message);
+            $lied->updateSongtext();
+        }
+
+        $this->message->retrieve();
+    }
+
+    public function liedbeheerDelete() {
+        if ( $this->checkAdmin() ) {
+            $lied = new SongsController($this->message);
+            $lied->delete();
         }
 
         $this->message->retrieve();
