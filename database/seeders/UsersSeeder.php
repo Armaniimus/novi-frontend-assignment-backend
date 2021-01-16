@@ -27,5 +27,17 @@ class UsersSeeder extends Seeder
             'password' => password_hash('123', PASSWORD_DEFAULT),
             'role_id' => 2
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'novi-user',
+            'password' => password_hash('novi-frontend', PASSWORD_DEFAULT),
+            'role_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'admin-user',
+            'password' => password_hash('novi-frontend', PASSWORD_DEFAULT),
+            'role_id' => 4
+        ]);
     }
 }
