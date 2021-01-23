@@ -29,15 +29,15 @@ class UsersSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'novi-user',
+            'name' => 'novi-admin',
             'password' => password_hash('novi-frontend', PASSWORD_DEFAULT),
-            'role_id' => 3
+            'role_id' => 1
         ]);
 
         DB::table('users')->insert([
-            'name' => 'admin-user',
+            'name' => 'novi-user',
             'password' => password_hash('novi-frontend', PASSWORD_DEFAULT),
-            'role_id' => 4
+            'role_id' => 2
         ]);
     }
 }
