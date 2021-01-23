@@ -37,11 +37,14 @@ class AccountsController extends Controller {
 
     public function update($accountId, $accountName, $password, $roleID) {
         if ( $this->validateInput($accountName, $password, $roleID, 'update') ) {
-            $user = Users::select('id', 'name', 'role_id')->find($accountId);
+            $user = Users::select('id', 'name', 'role_id', 'password')->find($accountId);
             if ( $user !== NULL ) {
                 $user->name = $accountName;
-                if (strLen($password) >= $this->minPassLength ) {
+                if (strlen($password) < $this->minPassLength ) {
+                    $this->message->addMessage('passlen' . strLen($password) );
                     $user->password = password_hash($password, PASSWORD_DEFAULT);
+                } else {
+                    $user->password = $user->password;
                 }
                 $user->role_id = $roleID;
                 $user->save();
@@ -52,7 +55,7 @@ class AccountsController extends Controller {
                 $this->message->addError('Account couldn\'t be found');
             }
         } else {
-            $this->message->addError('invalidValidation failed');
+            $this->message->addError('validation failed');
         }
     }
 

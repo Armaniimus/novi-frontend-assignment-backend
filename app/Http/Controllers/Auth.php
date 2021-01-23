@@ -15,7 +15,7 @@ class Auth extends Controller {
         $this->softLockoutTime = 15 * 60;
     }
 
-    public function logout($token) {
+    public function logout(string $token) {
         if ( $this->checkToken($token) === false) {
             $this->message->addMessage('logout failed');
             return false;
@@ -28,7 +28,7 @@ class Auth extends Controller {
         return true;
     }
 
-    public function login($username, $pass) {
+    public function login(string $username, string $pass) {
         if ($username === '') {
             $this->message->setAuth(false, 'no username given');
             return false;
@@ -69,7 +69,7 @@ class Auth extends Controller {
         $this->message->setAuth(true);
     }
 
-    public function checkToken($token) {
+    public function checkToken(string $token) {
         if ($token === '' || $token === null) {
             $this->message->setAuth(false, 'token has no value');
             return false;
@@ -98,7 +98,7 @@ class Auth extends Controller {
         return $user->role->name;
     }
 
-    public function checkAdmin($token) {
+    public function checkAdmin(string $token) {
         $role = $this->checkToken($token);
         if ( $role == false ) { 
             return false; 
@@ -112,7 +112,7 @@ class Auth extends Controller {
         return true;
     }
 
-    private function checkLockOuts($token) {
+    private function checkLockOuts(string $token) {
         $user = Users::select('id','soft_timeout', 'hard_timeout')->where('token', $token)->first();
         $timeNow = time();
 
@@ -137,7 +137,7 @@ class Auth extends Controller {
         return true;
     }
 
-    private function closeSession($user) {
+    private function closeSession(Users $user) {
         $user->soft_timeout = null;
         $user->hard_timeout = null;
         $user->token = null;

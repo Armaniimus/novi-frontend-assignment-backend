@@ -47,7 +47,7 @@ class Message extends Controller
         }
     }
 
-    public function setAuth($auth, $message = NULL) {
+    public function setAuth(bool $auth, string $message = NULL) {
         if ($auth === true && $this->auth !== false) {
             $this->auth = $auth;
         
@@ -61,15 +61,15 @@ class Message extends Controller
         }
     }
 
-    public function addMessage($message) {
+    public function addMessage(string $message) {
         $this->messages[] = $message; 
     }
 
-    public function addError($error) {
+    public function addError(string $error) {
         $this->errors[] = $error;
     }
 
-    public function addInfo($key, $value) {
+    public function addInfo(string $key, $value) {
         if ( isset($this->info[$key]) ) {
             $this->addMessage = 'cannot overwrite previous info on the same key';
             return false;
