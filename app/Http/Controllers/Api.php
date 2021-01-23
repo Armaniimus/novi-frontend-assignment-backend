@@ -66,8 +66,9 @@ class Api extends Controller {
 
     public function liedbeheerUpdate() {
         if ( $this->checkAdmin() ) {
+            ['songid' => $id, 'number' => $number, 'title' => $title] = $this->retrievePost(['songid', 'number', 'title'], $_REQUEST);
             $lied = new SongsController($this->message);
-            $lied->update();
+            $lied->update($id, $number, $title);
         }
 
         $this->message->retrieve();
@@ -84,8 +85,9 @@ class Api extends Controller {
 
     public function liedbeheerDelete() {
         if ( $this->checkAdmin() ) {
+            ['songid' => $id] = $this->retrievePost(['songid'], $_REQUEST);
             $lied = new SongsController($this->message);
-            $lied->delete();
+            $lied->delete($id);
         }
 
         $this->message->retrieve();

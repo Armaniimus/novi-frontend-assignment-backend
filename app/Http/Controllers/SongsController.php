@@ -16,11 +16,11 @@ class SongsController extends Controller {
         $this->setLiedInfo( Songs::all('id', 'number', 'title') );
     }
 
-    public function show($id) {
+    public function show(int $id) {
         $this->setLiedInfo( Songs::select(['id','number', 'title', 'songText'])->find($id) );
     }
 
-    public function create($number, $title) {
+    public function create(int $number, string $title) {
         if ( $this->validateInput($number, $title) ) {
             $oldTitleSong = Songs::select('id')->where('title', $title)->first();
             $oldNumberSong = Songs::select('id')->where('number', $number)->first();
@@ -45,19 +45,16 @@ class SongsController extends Controller {
         }
     }
 
-    public function update($id, $number, $title) {
-        if ( $this->validateID($id, 'id') && $this->validateInput($number, $title) ) {
+    public function update(int $id, int $number, string $title) {
+        if ( $this->validate->id($id, 'id') && $this->validateInput($number, $title) ) {
             $song = Songs::select('id', 'title', 'number')->find($id);
-            $oldTitleSong = Songs::select('id')->where('title', $title)->first();
-            $oldNumberSong = Songs::select('id')->where('number', $number)->first();
+            $doubleItem = Songs::select('id')->where('number', $number)->first();
             
-            if ( $oldTitleSong === NULL ) {
-                $this->message->addError('Song this title allready exists');
-
-            } else if ( $oldNumberSong === NULL ) {
+            if ( $doubleItem !== NULL && $id !== $doubleItem->id ) {
+                $this->message->addInfo( 'test', [$doubleItem->id, $id] );
                 $this->message->addError('Song this number allready exists');
 
-            } if ( $song !== NULL ) {
+            } else if ( $song !== NULL ) {
                 $title = htmlspecialchars($title);
 
                 $song->title = $title;
@@ -72,8 +69,8 @@ class SongsController extends Controller {
         }
     }
 
-    public function updateSongtext($id, $songText) {
-        if ( $this->validateID($id, 'id') && $this->validateInput($number, $title) ) {
+    public function updateSongtext(int $id, string $songText) {
+        if ( $this->validate->id($id, 'id') && $this->validateInput($number, $title) ) {
             $song = Songs::select('id', 'title', 'number')->find($id);
             
             if ( $song !== NULL ) {
@@ -89,8 +86,8 @@ class SongsController extends Controller {
         }
     }
 
-    public function delete($id) {
-        if ( $this->validateID($id, 'id') ) {
+    public function delete(int $id) {
+        if ( $this->validate->id($id, 'songid') ) {
             $song = Songs::select('id')->find($id);
             if ( $song !== NULL ) {
                 $song->delete();
@@ -101,9 +98,9 @@ class SongsController extends Controller {
         }
     }
 
-    private function validateInput($number, $title) {
-        if ( !$this->validateID($number, 'number') ) { return false; }
-        if ( !$this->validateString($title, 'title') ) { return false;}
+    private function validateInput(int $number, string $title) {
+        if ( !$this->validate->id($number, 'number') ) { return false; }
+        if ( !$this->validate->string_htmlspecialchars($title, 'title') ) { return false;}
 
         return true;
     }
