@@ -21,14 +21,10 @@ class SongsController extends Controller {
     }
 
     public function create(int $number, string $title) {
-        if ( $this->validateInput($number, $title) ) {
-            $oldTitleSong = Songs::select('id')->where('title', $title)->first();
-            $oldNumberSong = Songs::select('id')->where('number', $number)->first();
+        if ( $this->validateInput($number, $title) ) {            
+            $doubleItem = Songs::select('id')->where('number', $number)->first();
             
-            if ( $oldTitleSong === NULL ) {
-                $this->message->addError('Song this title allready exists');
-
-            } else if ( $oldNumberSong === NULL ) {
+            if ( $doubleItem !== NULL ) {
                 $this->message->addError('Song this number allready exists');
 
             } else {
