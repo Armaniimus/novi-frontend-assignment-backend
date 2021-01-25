@@ -57,8 +57,9 @@ class Api extends Controller {
 
     public function liedbeheerCreate() {
         if ( $this->checkAdmin() ) {
+            ['number' => $number, 'title' => $title] = $this->retrievePost(['number', 'title'], $_REQUEST);
             $lied = new SongsController($this->message);
-            $lied->create();
+            $lied->create($number, $title);
         }
 
         $this->message->retrieve();
