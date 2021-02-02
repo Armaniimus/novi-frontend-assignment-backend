@@ -10,7 +10,7 @@ class AccountsController extends Controller {
     public function __construct(Message $message) {
         $this->validate = new Validate($message);
         $this->message = $message;
-        $this->minPassLength = 3;
+        $this->minPassLength = 8;
     }
 
     public function index() {
