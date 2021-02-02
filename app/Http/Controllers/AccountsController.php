@@ -11,6 +11,7 @@ class AccountsController extends Controller {
         $this->validate = new Validate($message);
         $this->message = $message;
         $this->minPassLength = 8;
+        $this->requiredUsernameLength = 3;
     }
 
     public function index() {
@@ -19,6 +20,11 @@ class AccountsController extends Controller {
 
     public function create($accountName, $password, $roleID) {      
         if ( $this->validateInput($accountName, $password, $roleID) ) {
+            if (strlen($accountName) < $this->requiredUsernameLength) {
+                $this->message->addError('AccountName Needs at least ' . $this->requiredUsernameLength .' letters');
+                return;
+            }
+
             $oldUser = Users::select('id', 'name', 'role_id')->where('name', $accountName)->first();
             if ( $oldUser === NULL) {
                 $user = new Users();
@@ -37,6 +43,11 @@ class AccountsController extends Controller {
 
     public function update($accountId, $accountName, $password, $roleID) {
         if ( $this->validateInput($accountName, $password, $roleID, 'update') ) {
+            if (strlen($accountName) < $this->requiredUsernameLength) {
+                $this->message->addError('AccountName Needs at least ' . $this->requiredUsernameLength .' letters');
+                return;
+            }
+
             $user = Users::select('id', 'name', 'role_id', 'password')->find($accountId);
             if ( $user !== NULL ) {
                 $user->name = $accountName;
