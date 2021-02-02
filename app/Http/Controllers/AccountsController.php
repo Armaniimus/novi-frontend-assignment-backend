@@ -42,9 +42,9 @@ class AccountsController extends Controller {
                 $user->name = $accountName;
                 if (strlen($password) < $this->minPassLength ) {
                     $this->message->addMessage('passlen' . strLen($password) );
-                    $user->password = password_hash($password, PASSWORD_DEFAULT);
-                } else {
                     $user->password = $user->password;
+                } else {
+                    $user->password = password_hash($password, PASSWORD_DEFAULT);
                 }
                 $user->role_id = $roleID;
                 $user->save();
