@@ -11,8 +11,8 @@ class Auth extends Controller {
     public function __construct(Message $message) {
         $this->message = $message;
     
-        $this->hardLockoutTime = 180 * 60;
-        $this->softLockoutTime = 15 * 60;
+        $this->hardLockoutTime = 7 * 60 * 60;
+        $this->softLockoutTime = 2 * 24 * 60 * 60;
     }
 
     public function logout(string $token) {
