@@ -19,6 +19,9 @@ class AccountsController extends Controller {
     }
 
     public function create($accountName, $password, $roleID) {      
+        $accountName = trim($accountName);
+        $password = trim($password);
+
         if ( $this->validateInput($accountName, $password, $roleID) ) {
             if (strlen($accountName) < $this->requiredUsernameLength) {
                 $this->message->addError('AccountName Needs at least ' . $this->requiredUsernameLength .' letters');
@@ -42,6 +45,9 @@ class AccountsController extends Controller {
     }
 
     public function update($accountId, $accountName, $password, $roleID) {
+        $accountName = trim($accountName);
+        $password = trim($password);
+
         if ( $this->validateInput($accountName, $password, $roleID, 'update') ) {
             if (strlen($accountName) < $this->requiredUsernameLength) {
                 $this->message->addError('AccountName Needs at least ' . $this->requiredUsernameLength .' letters');
