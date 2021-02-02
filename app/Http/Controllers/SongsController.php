@@ -66,7 +66,7 @@ class SongsController extends Controller {
     }
 
     public function updateSongtext(int $id, string $songText) {
-        if ( $this->validate->id($id, 'id') && $this->validateInput($number, $title) ) {
+        if ( $this->validateInput($id, $songText) ) {
             $song = Songs::select('id', 'title', 'number')->find($id);
             
             if ( $song !== NULL ) {

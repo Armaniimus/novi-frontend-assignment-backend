@@ -77,8 +77,9 @@ class Api extends Controller {
 
     public function liedbeheerUpdateSongtext() {
         if ( $this->checkAdmin() ) {
+            ['songid' => $id, 'songtext' => $songText] = $this->retrievePost(['songid', 'songtext'], $_REQUEST);
             $lied = new SongsController($this->message);
-            $lied->updateSongtext();
+            $lied->updateSongtext($id, $songText);
         }
 
         $this->message->retrieve();
