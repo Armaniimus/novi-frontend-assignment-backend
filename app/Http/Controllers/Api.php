@@ -32,7 +32,7 @@ class Api extends Controller {
         if ($this->checkToken() !== false) {
             $lied = new SongsController($this->message);
             $lied->index();
-        }      
+        }
 
         $this->message->retrieve();
     }
@@ -123,7 +123,7 @@ class Api extends Controller {
 
         $this->message->retrieve();
     }
-    
+
     public function accountbeheerDelete() {
         if ( $this->checkAdmin() ) {
             ['accountid' => $accountid] = $this->retrievePost(['accountid'], $_REQUEST);
@@ -153,7 +153,7 @@ class Api extends Controller {
             } else {
                 $returnData[$index] = '';
                 continue;
-            }            
+            }
         }
 
         return $returnData;
