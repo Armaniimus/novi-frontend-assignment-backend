@@ -18,7 +18,7 @@ class AccountsController extends Controller {
         $this->setAccountInfo( Users::all('id', 'name', 'role_id') );
     }
 
-    public function create($accountName, $password, $roleID) {      
+    public function create($accountName, $password, $roleID) {
         $accountName = trim($accountName);
         $password = trim($password);
 
@@ -40,7 +40,7 @@ class AccountsController extends Controller {
                 $this->message->addMessage('Account creation is succesfull');
             } else {
                 $this->message->addError('Account with this username allready exists');
-            }            
+            }
         }
     }
 
@@ -88,7 +88,7 @@ class AccountsController extends Controller {
 
     private function validateInput($accountName, $password, $roleID, $mode = 'create') {
         if ( !$this->validate->id($roleID, 'roleID') ) {return false;}
-        
+
         $role = Roles::find($roleID);
         if ( $role === NULL) {
             $this->message->addError('invalid roleID');
