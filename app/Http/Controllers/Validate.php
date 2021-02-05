@@ -10,7 +10,7 @@ class Validate extends Controller
         $this->message = $message;
     }
 
-    public function id(int $id, string $inputname = 'unknown input') {
+    public function id( /*mixed*/ $id, string $inputname = 'unknown input') {
         if ($id === null || $id === '') {
             $this->message->addError($inputname . ' is null');
             return false;
