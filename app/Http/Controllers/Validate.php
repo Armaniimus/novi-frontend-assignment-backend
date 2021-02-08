@@ -10,12 +10,12 @@ class Validate extends Controller
         $this->message = $message;
     }
 
-    public function id( /*mixed*/ $id, string $inputname = 'unknown input') {
+    public function id( $id, $inputname = 'unknown input') {
         if ($id === null || $id === '') {
-            $this->message->addError($inputname . ' is null');
+            $this->message->addError($inputname . ' heeft geen waarde');
             return false;
         } if ( !is_int((int) $id) ) {
-            $this->message->addError($inputname . ' is not an integer');
+            $this->message->addError($inputname . ' is geen integer getal');
             return false;
         }
         return true;
@@ -23,14 +23,14 @@ class Validate extends Controller
 
     public function string_stripTags(string $string, string $inputname) {
         if ( $string !== strip_tags($string) ) {
-            $this->message->addError($inputname . ' has illegal characters');
+            $this->message->addError($inputname . ' heeft niet toegestane characters');
             return false;
         }
     }
 
     public function string_htmlspecialchars(string $string, string $inputname) {
         if ( $string !== htmlspecialchars($string) ) {
-            $this->message->addError($inputname . ' has illegal characters');
+            $this->message->addError($inputname . ' heeft niet toegestane characters');
             return false;
         }
         return true;
