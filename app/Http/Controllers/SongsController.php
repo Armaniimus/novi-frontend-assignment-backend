@@ -20,12 +20,12 @@ class SongsController extends Controller {
         $this->setLiedInfo( Songs::select(['id','number', 'title', 'songText'])->find($id) );
     }
 
-    public function create(int $number, string $title) {
+    public function create($number, $title) {
         if ( $this->validateInput($number, $title) ) {            
             $doubleItem = Songs::select('id')->where('number', $number)->first();
             
             if ( $doubleItem !== NULL ) {
-                $this->message->addError('Song this number allready exists');
+                $this->message->addError('Lied met dit nummer bestaat al');
 
             } else {
                 $title = htmlspecialchars($title);
@@ -36,19 +36,18 @@ class SongsController extends Controller {
                 $song->save();
 
                 $this->setLiedInfo($song);
-                $this->message->addMessage('Song creation is succesfull');
+                $this->message->addMessage('Lied succesvol aangemaakt');
             }
         }
     }
 
-    public function update(int $id, int $number, string $title) {
-        if ( $this->validate->id($id, 'id') && $this->validateInput($number, $title) ) {
+    public function update($id, $number, $title) {
+        if ( $this->validate->id($id, 'Liedid') && $this->validateInput($number, $title) ) {
             $song = Songs::select('id', 'title', 'number')->find($id);
             $doubleItem = Songs::select('id')->where('number', $number)->first();
             
-            if ( $doubleItem !== NULL && $id !== $doubleItem->id ) {
-                $this->message->addInfo( 'test', [$doubleItem->id, $id] );
-                $this->message->addError('Song this number allready exists');
+            if ( $doubleItem !== NULL && $song->id !== $doubleItem->id ) {
+                $this->message->addError('Lied met dit nummer bestaat al');
 
             } else if ( $song !== NULL ) {
                 $title = htmlspecialchars($title);
@@ -58,15 +57,15 @@ class SongsController extends Controller {
                 $song->save();
 
                 $this->setLiedInfo($song);
-                $this->message->addMessage('Song update is succesfull');
+                $this->message->addMessage('Lied update succesvol');
             } else {
-                $this->message->addError('Song couldn\'t be found');
+                $this->message->addError('Lied bestaat niet');
             }
         }
     }
 
-    public function updateSongtext(int $id, string $songText) {
-        if ( $this->validateInput($id, $songText) ) {
+    public function updateSongtext($id, $songText) {
+        if ( $this->validateInput($id, $songText, 'Liedid') ) {
             $song = Songs::select('id', 'title', 'number')->find($id);
             
             if ( $song !== NULL ) {
@@ -75,28 +74,28 @@ class SongsController extends Controller {
                 $song->save();
 
                 $this->setLiedInfo($song);
-                $this->message->addMessage('Songtext update of the song is succesfull');
+                $this->message->addMessage('Liedtekst update successvol');
             } else {
-                $this->message->addError('Song couldn\'t be found');
+                $this->message->addError('Lied bestaat niet');
             }
         }
     }
 
-    public function delete(int $id) {
-        if ( $this->validate->id($id, 'songid') ) {
+    public function delete($id) {
+        if ( $this->validate->id($id, 'Liedid') ) {
             $song = Songs::select('id')->find($id);
             if ( $song !== NULL ) {
                 $song->delete();
-                $this->message->addMessage('Song deletion is succesfull');
+                $this->message->addMessage('Lied succesvol verwijderd');
             } else {
-                $this->message->addError('Song couldn\'t be found');
+                $this->message->addError('Lied bestaat niet');
             }            
         }
     }
 
-    private function validateInput(int $number, string $title) {
-        if ( !$this->validate->id($number, 'number') ) { return false; }
-        if ( !$this->validate->string_htmlspecialchars($title, 'title') ) { return false;}
+    private function validateInput($number, $title, string $numberVarName = 'Nummer') {
+        if ( !$this->validate->id($number, $numberVarName) ) { return false; }
+        if ( !$this->validate->string_htmlspecialchars($title, 'Titel') ) { return false;}
 
         return true;
     }
