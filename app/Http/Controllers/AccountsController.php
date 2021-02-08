@@ -24,7 +24,7 @@ class AccountsController extends Controller {
 
         if ( $this->validateInput($accountName, $password, $roleID) ) {
             if (strlen($accountName) < $this->requiredUsernameLength) {
-                $this->message->addError('AccountName Needs at least ' . $this->requiredUsernameLength .' letters');
+                $this->message->addError('Gebruikersnaam moet minstens ' . $this->requiredUsernameLength .' lang zijn');
                 return;
             }
 
@@ -50,7 +50,7 @@ class AccountsController extends Controller {
 
         if ( $this->validateInput($accountName, $password, $roleID, 'update') ) {
             if (strlen($accountName) < $this->requiredUsernameLength) {
-                $this->message->addError('AccountName Needs at least ' . $this->requiredUsernameLength .' letters');
+                $this->message->addError('Gebruikersnaam moet minstens ' . $this->requiredUsernameLength .' lang zijn');
                 return;
             }
 
@@ -71,8 +71,6 @@ class AccountsController extends Controller {
             } else {
                 $this->message->addError('Account couldn\'t be found');
             }
-        } else {
-            $this->message->addError('validation failed');
         }
     }
 
@@ -87,11 +85,11 @@ class AccountsController extends Controller {
     }
 
     private function validateInput($accountName, $password, $roleID, $mode = 'create') {
-        if ( !$this->validate->id($roleID, 'roleID') ) {return false;}
+        if ( !$this->validate->id($roleID, 'Rol') ) {return false;}
 
         $role = Roles::find($roleID);
         if ( $role === NULL) {
-            $this->message->addError('invalid roleID');
+            $this->message->addError('Geen geldige rol');
             return false;
         }
 
@@ -101,7 +99,7 @@ class AccountsController extends Controller {
             if ( strlen($password) === 0 && $mode === 'update' ) {
                 $this->message->addMessage('Password not set');
             } else {
-                $this->message->addError('Password too short');
+                $this->message->addError('Wachtwoord is te kort');
                 return false;
             }
         }
