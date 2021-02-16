@@ -83,6 +83,8 @@ class Message extends Controller
         $this->renderMessages();
         $this->renderErrors();
 
-        echo json_encode($this->info);
+        return response()->json($this->info);
+
+        // echo json_encode($this->info);
     }
 }

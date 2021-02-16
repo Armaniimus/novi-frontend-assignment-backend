@@ -18,14 +18,14 @@ class Api extends Controller {
         ['username' => $username, 'password' => $password] = $this->retrievePost(['username', 'password'], $_REQUEST);
         $key = $this->auth->login($username, $password);
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function logout() {
         ['token' => $token] = $this->retrievePost(['token'], $_REQUEST);
         $this->auth->logout($token);
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function overview() {
@@ -34,7 +34,7 @@ class Api extends Controller {
             $lied->index();
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function overviewSpecific($id) {
@@ -43,7 +43,7 @@ class Api extends Controller {
             $lied->show($id);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function liedbeheer() {
@@ -52,7 +52,7 @@ class Api extends Controller {
             $lied->index();
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function liedbeheerCreate() {
@@ -62,7 +62,7 @@ class Api extends Controller {
             $lied->create($number, $title);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function liedbeheerUpdate() {
@@ -72,7 +72,7 @@ class Api extends Controller {
             $lied->update($id, $number, $title);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function liedbeheerUpdateSongtext() {
@@ -82,7 +82,7 @@ class Api extends Controller {
             $lied->updateSongtext($id, $songText);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function liedbeheerDelete() {
@@ -92,7 +92,7 @@ class Api extends Controller {
             $lied->delete($id);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function accountbeheer() {
@@ -101,7 +101,7 @@ class Api extends Controller {
             $account->index();
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function accountbeheerCreate() {
@@ -111,7 +111,7 @@ class Api extends Controller {
             $account->create($accountName, $password, $roleId);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function accountbeheerUpdate() {
@@ -121,7 +121,7 @@ class Api extends Controller {
             $account->update($accountId, $accountName, $password, $roleID);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     public function accountbeheerDelete() {
@@ -131,7 +131,7 @@ class Api extends Controller {
             $account->delete($accountid);
         }
 
-        $this->message->retrieve();
+        return $this->message->retrieve();
     }
 
     private function checkAdmin() {
